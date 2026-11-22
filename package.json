@@ -1,6 +1,6 @@
 {
-  "name": "wav-a-dwp",
-  "productName": "Wav a DWP",
+  "name": "dwpmaker",
+  "productName": "DWPMaker",
   "version": "1.0.0",
   "description": "Convierte audio (.wav con markers, .mp3, .ogg, .flac…) en programas de DirectWave (.dwp). Versión Android/Windows.",
   "author": "Testorius14",
@@ -25,8 +25,8 @@
     "electron-builder": "^25.1.8"
   },
   "build": {
-    "appId": "com.testorius14.wavadwp",
-    "productName": "Wav a DWP",
+    "appId": "com.testorius14.dwpmaker",
+    "productName": "DWPMaker",
     "directories": {
       "output": "dist-win"
     },
@@ -54,10 +54,10 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "artifactName": "WavADWP-Setup-${version}.${ext}"
+      "artifactName": "DWPMaker-Setup-${version}.${ext}"
     },
     "portable": {
-      "artifactName": "WavADWP-Portable-${version}.${ext}"
+      "artifactName": "DWPMaker-Portable-${version}.${ext}"
     }
   }
 }

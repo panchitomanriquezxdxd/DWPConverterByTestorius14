@@ -7,7 +7,7 @@ function createWindow() {
     height: 900,
     minWidth: 380,
     minHeight: 560,
-    title: 'Wav a DWP',
+    title: 'DWPMaker',
     autoHideMenuBar: true,
     webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true },
   });

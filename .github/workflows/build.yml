@@ -40,12 +40,12 @@ jobs:
         run: ./gradlew assembleDebug --no-daemon
 
       - name: Renombrar APK
-        run: cp android/app/build/outputs/apk/debug/app-debug.apk WavADWP-android.apk
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk DWPMaker-android.apk
 
       - uses: actions/upload-artifact@v4
         with:
-          name: WavADWP-android
-          path: WavADWP-android.apk
+          name: DWPMaker-android
+          path: DWPMaker-android.apk
 
   windows:
     name: Instalador de Windows
@@ -67,7 +67,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: WavADWP-windows
+          name: DWPMaker-windows
           path: |
             dist-win/*.exe
 

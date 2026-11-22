@@ -3,9 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-</head>
-<body>
-<title>Wav a DWP</title>
+<title>DWPMaker</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@600;700&display=swap">
@@ -101,89 +99,96 @@ input[type=number] { width: 100%; min-height: 48px; padding: 0 12px; font: 500 1
 .mk-body p { padding: 0; }
 .foot { font-size: 0.8rem; color: var(--muted); }
 @media (prefers-reduced-motion: no-preference) { button { transition: filter .12s; } button:hover:not(:disabled) { filter: brightness(1.08); } }
+.langbar { display: flex; justify-content: flex-end; margin-bottom: 14px; }
+.langbar select { width: auto; min-height: 40px; font-size: 0.92rem; }
 </style>
+</head>
+<body>
 
 <main class="wrap">
   <header>
-    <h1>Wav a DWP</h1>
-    <p class="lead">Convertí un audio (.wav con markers de Slicex, o .mp3, .ogg, .m4a, .flac…) en un programa de DirectWave (.dwp), sin abrir FL Studio. El archivo se procesa en este dispositivo y no se sube a ningún servidor.</p>
+    <div class="langbar"><select id="lang" data-i18n-aria="langLabel"></select></div>
+    <h1 data-i18n="h1"></h1>
+    <p class="lead" data-i18n="lead"></p>
   </header>
 
   <section class="card" aria-labelledby="h-file">
-    <div class="step-head"><span class="step-n">1</span><h2 id="h-file">Archivo</h2></div>
+    <div class="step-head"><span class="step-n">1</span><h2 id="h-file" data-i18n="stepFile"></h2></div>
     <div class="row">
-      <label class="btn" id="pick">Elegir archivo de audio<input id="file" type="file" accept="audio/*,video/mp4,.wav,.mp3,.ogg,.oga,.opus,.m4a,.aac,.flac,.aif,.aiff,.wma,.mp4,.webm,.caf"></label>
+      <label class="btn" id="pick"><span data-i18n="pick"></span><input id="file" type="file" accept="audio/*,video/mp4,.wav,.mp3,.ogg,.oga,.opus,.m4a,.aac,.flac,.aif,.aiff,.wma,.mp4,.webm,.caf"></label>
     </div>
     <div id="info" class="facts" hidden></div>
-    <div class="scope"><canvas id="scope" role="img" aria-label="Forma de onda con los markers"></canvas><span class="badge" id="demoBadge">Ejemplo</span></div>
-    <p class="caption" id="scopeCap">Así se ve un archivo con 3 markers: cada marker abre una región y cada región queda en una nota.</p>
+    <div class="scope"><canvas id="scope" role="img" data-i18n-aria="scopeAria"></canvas><span class="badge" id="demoBadge" data-i18n="badgeDemo"></span></div>
+    <p class="caption" id="scopeCap"></p>
     <div>
-      <div class="regions-head"><span>Nota</span><span>Desde</span><span>Duración</span><span></span></div>
-      <ul class="regions" id="regions" aria-label="Regiones"></ul>
+      <div class="regions-head"><span data-i18n="colNote"></span><span data-i18n="colFrom"></span><span data-i18n="colDur"></span><span></span></div>
+      <ul class="regions" id="regions" data-i18n-aria="regionsAria"></ul>
     </div>
     <details class="mk" id="mk">
-      <summary>Markers: agregar o cambiar</summary>
+      <summary data-i18n="mkSummary"></summary>
       <div class="mk-body">
-        <p class="caption">Tocá la forma de onda para poner un marker; tocá uno existente para quitarlo. O usá las opciones automáticas.</p>
+        <p class="caption" data-i18n="mkHelp"></p>
         <div class="grp">
-          <label class="lbl" for="mkSens">Detectar sonidos</label>
-          <div class="row"><select id="mkSens"><option value="hi">Sensible (sonidos suaves)</option><option value="mid" selected>Normal</option><option value="lo">Poco sensible (solo golpes fuertes)</option></select><button class="secondary" id="mkDetect" disabled>Detectar</button></div>
+          <label class="lbl" for="mkSens" data-i18n="mkSensLbl"></label>
+          <div class="row"><select id="mkSens"><option value="hi" data-i18n="sensHi"></option><option value="mid" data-i18n="sensMid" selected></option><option value="lo" data-i18n="sensLo"></option></select><button class="secondary" id="mkDetect" data-i18n="mkDetect" disabled></button></div>
         </div>
         <div class="grp">
-          <label class="lbl" for="mkN">Dividir en partes iguales</label>
-          <div class="row"><input id="mkN" type="number" min="2" max="128" value="16" inputmode="numeric"><button class="secondary" id="mkEqual" disabled>Dividir</button></div>
+          <label class="lbl" for="mkN" data-i18n="mkEqualLbl"></label>
+          <div class="row"><input id="mkN" type="number" min="2" max="128" value="16" inputmode="numeric"><button class="secondary" id="mkEqual" data-i18n="mkEqual" disabled></button></div>
         </div>
         <div class="grp">
-          <label class="lbl" for="mkMs">Mover todos los markers (milisegundos)</label>
-          <div class="row"><button class="secondary" id="mkBack" disabled aria-label="Mover antes">◀ Antes</button><input id="mkMs" type="number" min="1" max="2000" value="35" inputmode="numeric"><button class="secondary" id="mkFwd" disabled aria-label="Mover después">Después ▶</button></div>
+          <label class="lbl" for="mkMs" data-i18n="mkMsLbl"></label>
+          <div class="row"><button class="secondary" id="mkBack" data-i18n="mkBack" data-i18n-aria="mkBackAria" disabled></button><input id="mkMs" type="number" min="1" max="2000" value="35" inputmode="numeric"><button class="secondary" id="mkFwd" data-i18n="mkFwd" data-i18n-aria="mkFwdAria" disabled></button></div>
         </div>
-        <div class="row"><button class="secondary" id="mkClear" disabled>Quitar todos</button><button class="secondary" id="mkRestore" disabled>Restaurar los del archivo</button></div>
+        <div class="row"><button class="secondary" id="mkClear" data-i18n="mkClear" disabled></button><button class="secondary" id="mkRestore" data-i18n="mkRestore" disabled></button></div>
       </div>
     </details>
     <label class="check" id="introRow" hidden><input type="checkbox" id="intro"><span id="introText"></span></label>
   </section>
 
   <section class="card" aria-labelledby="h-name">
-    <div class="step-head"><span class="step-n">2</span><h2 id="h-name">Nombre del programa</h2></div>
-    <label class="lbl" for="pname">Nombre</label>
-    <input id="pname" type="text" maxlength="40" value="" placeholder="Mi programa" autocomplete="off" autocapitalize="off" spellcheck="false">
-    <p class="caption" id="nameHint">Las regiones se llaman <code>NOMBRE_C5_127</code>, <code>NOMBRE_C#5_127</code>…</p>
+    <div class="step-head"><span class="step-n">2</span><h2 id="h-name" data-i18n="stepName"></h2></div>
+    <label class="lbl" for="pname" data-i18n="nameLbl"></label>
+    <input id="pname" type="text" maxlength="40" value="" data-i18n-ph="namePh" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <p class="caption" id="nameHint"></p>
   </section>
 
   <section class="card" aria-labelledby="h-make">
-    <div class="step-head"><span class="step-n">3</span><h2 id="h-make">Crear</h2></div>
-    <label class="lbl" for="quality">Calidad del audio</label>
+    <div class="step-head"><span class="step-n">3</span><h2 id="h-make" data-i18n="stepMake"></h2></div>
+    <label class="lbl" for="quality" data-i18n="qualityLbl"></label>
     <select id="quality">
-      <option value="hi">Alta · loops a 32 bit, como FL (pesa el doble)</option>
-      <option value="std" selected>Estándar · 16 bit, frecuencia original</option>
-      <option value="lo">Liviana · mitad de la frecuencia de muestreo</option>
-      <option value="min">Mínima · cuarta parte de la frecuencia</option>
+      <option value="hi" data-i18n="qHi"></option>
+      <option value="std" data-i18n="qStd" selected></option>
+      <option value="lo" data-i18n="qLo"></option>
+      <option value="min" data-i18n="qMin"></option>
     </select>
-    <p class="caption" id="sizeEst">Elegí un archivo para ver el tamaño estimado.</p>
-    <label class="check"><input type="checkbox" id="optTrim" checked><span>Recortar silencios: conservar solo el primer sonido de cada región, como hace FL Studio.</span></label>
-    <label class="check"><input type="checkbox" id="optLoop" checked><span>Crear loop automático con crossfade en los sonidos que se sostienen.</span></label>
-    <p class="caption">Los sonidos que decaen o duran menos de 0,3 s quedan sin loop.</p>
-    <div class="row"><button id="make" disabled>Crear .dwp</button></div>
+    <p class="caption" id="sizeEst"></p>
+    <label class="check"><input type="checkbox" id="optTrim" checked><span data-i18n="optTrim"></span></label>
+    <label class="check"><input type="checkbox" id="optLoop" checked><span data-i18n="optLoop"></span></label>
+    <p class="caption" data-i18n="loopNote"></p>
+    <div class="row"><button id="make" data-i18n="make" disabled></button></div>
     <progress id="prog" max="1" value="0" hidden></progress>
-    <p class="msg" id="msg" role="status" aria-live="polite">Elegí un archivo para empezar.</p>
+    <p class="msg" id="msg" role="status" aria-live="polite"></p>
     <div class="result" id="result" hidden>
       <p class="ok" id="okline"></p>
-      <div class="row"><button id="save">Descargar .dwp</button></div>
+      <div class="row"><button id="save" data-i18n="saveDwp"></button></div>
       <p class="caption" id="saveNote"></p>
     </div>
   </section>
 
   <details>
-    <summary>Cómo se asignan las notas</summary>
-    <p>El primer marker queda en C5 (nota 60) y cada marker siguiente sube un semitono. La primera región también cubre las teclas más graves y la última las más agudas. Con más de 68 markers, la primera nota baja para que la última quede en la tecla 127; el máximo es 128. El audio anterior al primer marker se ignora, salvo que marques la opción para incluirlo. Cada región se guarda normalizada. La calidad Estándar usa 16 bit y la frecuencia original, como FL Studio. Alta guarda los loops a 32 bit, con el doble de peso. Liviana y Mínima bajan la frecuencia de muestreo a la mitad o a un cuarto: pesan menos pero pierden agudos. El loop automático busca un largo que sea un múltiplo del período del sonido y mezcla el final con el material anterior al inicio del loop, con el mismo tipo de crossfade que genera DirectWave.</p>
+    <summary data-i18n="howSummary"></summary>
+    <p data-i18n="howText"></p>
   </details>
-  <p class="foot">Hecho a partir de archivos de Slicex y de programas guardados por DirectWave. Probado con 3 y 15 regiones a 44,1 kHz.</p>
+  <p class="foot" data-i18n="foot"></p>
 </main>
 
 <script>
 /* Núcleo WAV (con markers) -> DirectWave .dwp. Sin dependencias. */
 const W2D = (function () {
   'use strict';
+  let L = (k) => k;   /* traductor: lo inyecta la app con W2D.setTranslator */
+  const err = (key, params) => Object.assign(new Error(L(key, params)), { key, params });
   const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
   const GUARD = 256, TAIL = 1024, FADE = 32, MAX_REGIONS = 128, BASE_NOTE = 60;
 
@@ -218,14 +223,14 @@ const W2D = (function () {
   function cleanName(s) {
     s = (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\.[A-Za-z0-9]{1,4}$/, '');
     s = s.replace(/[^A-Za-z0-9 _-]+/g, '_').replace(/\s+/g, ' ').trim().slice(0, 40).trim();
-    return s || 'programa';
+    return s || 'DWPMaker';
   }
 
   /* -------- lectura de WAV -------- */
   function parseWav(buf) {
     const dv = new DataView(buf), len = buf.byteLength;
     const tag = (o) => String.fromCharCode(dv.getUint8(o), dv.getUint8(o + 1), dv.getUint8(o + 2), dv.getUint8(o + 3));
-    if (len < 44 || tag(0) !== 'RIFF' || tag(8) !== 'WAVE') throw new Error('No es un archivo WAV válido.');
+    if (len < 44 || tag(0) !== 'RIFF' || tag(8) !== 'WAVE') throw err('errNotWav');
     let pos = 12, fmt = null, dataOff = -1, dataLen = 0, cues = [];
     while (pos + 8 <= len) {
       const id = tag(pos); let size = dv.getUint32(pos + 4, true); const body = pos + 8;
@@ -245,13 +250,13 @@ const W2D = (function () {
       }
       pos = body + size + (size & 1);
     }
-    if (!fmt || dataOff < 0) throw new Error('El WAV no tiene los bloques fmt y data.');
+    if (!fmt || dataOff < 0) throw err('errNoFmt');
     const ok = (fmt.tag === 1 && [8, 16, 24, 32].includes(fmt.bits)) || (fmt.tag === 3 && [32, 64].includes(fmt.bits));
-    if (!ok) throw new Error('Formato de audio no soportado (' + fmt.bits + ' bits, tipo ' + fmt.tag + '). Usá un WAV PCM o float.');
-    if (fmt.channels < 1) throw new Error('El WAV no tiene canales.');
+    if (!ok) throw err('errUnsupported', { bits: fmt.bits, type: fmt.tag });
+    if (fmt.channels < 1) throw err('errNoChannels');
     const frameBytes = fmt.channels * fmt.bits / 8;
     const frames = Math.floor(dataLen / frameBytes);
-    if (frames < 1) throw new Error('El WAV no tiene audio.');
+    if (frames < 1) throw err('errNoAudio');
     const info = { buf, fmt, dataOff, frames, frameBytes };
     const set = [...new Set(cues.filter((c) => c < frames))].sort((a, b) => a - b);
     info.markers = set;
@@ -278,7 +283,7 @@ const W2D = (function () {
     const m = info.markers;
     const bounds = !m.length ? [0] : (info.includeIntro && m[0] > 0 ? [0].concat(m) : m);
     const n = bounds.length;
-    if (n > MAX_REGIONS) throw new Error('Hay ' + n + ' markers; el máximo es ' + MAX_REGIONS + ' (una región por tecla).');
+    if (n > MAX_REGIONS) throw err('errTooMany', { n, max: MAX_REGIONS });
     const first = n <= 128 - BASE_NOTE ? BASE_NOTE : 128 - n;
     return bounds.map((start, k) => {
       const end = k + 1 < n ? bounds[k + 1] : info.frames, note = first + k;
@@ -548,7 +553,7 @@ const W2D = (function () {
     return best;
   }
 
-  return { parseWav, plan, buildDwp, detectMarkers, equalMarkers, snapMarker, estimateSize, decimate, findLoop, crossfade, trimLength, zipStore, cleanName, noteName, concat, MAX_REGIONS, BASE_NOTE };
+  return { parseWav, plan, buildDwp, detectMarkers, equalMarkers, snapMarker, estimateSize, decimate, findLoop, crossfade, trimLength, zipStore, cleanName, noteName, concat, MAX_REGIONS, BASE_NOTE, setTranslator: (f) => { L = f; } };
 })();
 
 
@@ -557,8 +562,272 @@ const W2D = (function () {
 (function () {
   'use strict';
   const TPL = {"prefix":"RHdQciYAAAAGAAAAEAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA","hdr":"ZAAAAB4AAAAAAAAAAAAAAAAAZmbmPgAAAAADAAAAAAAAAAAAAAAAAAAA","rest":"aAAAAAoAAAAAAAAAAAAAAAAAAAAAAGkAAAASAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAawAAABEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABsAAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGwAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbQAAAAQAAAAAAAAAAAAAAG0AAAAEAAAAAAAAAAAAAABtAAAABAAAAAAAAAAAAAAAbQAAAAQAAAAAAAAAAAAAAG4AAAANAAAAAAAAAAEAAAAAAACAPwAAAABuAAAADQAAAAAAAAACAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAAwAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAAQAAAAAAACAPwAAAABuAAAADQAAAAAAAAAFAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAABgAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAAcAAAAAAACAPwAAAABuAAAADQAAAAAAAAAIAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAACQAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAAoAAAAAAACAPwAAAABuAAAADQAAAAAAAAALAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAADAAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAA0AAAAAAACAPwAAAABuAAAADQAAAAAAAAAOAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAADwAAAAAAAIA/AAAAAG4AAAANAAAAAAAAABAAAAAAAACAPwAAAABuAAAADQAAAAAAAAARAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAEgAAAAAAAIA/AAAAAG4AAAANAAAAAAAAABMAAAAAAACAPwAAAABuAAAADQAAAAAAAAAUAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAFQAAAAAAAIA/AAAAAG4AAAANAAAAAAAAABYAAAAAAACAPwAAAABuAAAADQAAAAAAAAAXAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAGAAAAAAAAIA/AAAAAG4AAAANAAAAAAAAABkAAAAAAACAPwAAAABuAAAADQAAAAAAAAAaAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAGwAAAAAAAIA/AAAAAG4AAAANAAAAAAAAABwAAAAAAACAPwAAAABuAAAADQAAAAAAAAAdAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAHgAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAB8AAAAAAACAPwAAAABuAAAADQAAAAAAAAAgAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAIQAAAAAAAIA/AAAAAG4AAAANAAAAAAAAACIAAAAAAACAPwAAAABuAAAADQAAAAAAAAAjAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAJAAAAAAAAIA/AAAAAG4AAAANAAAAAAAAACUAAAAAAACAPwAAAABuAAAADQAAAAAAAAAmAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAJwAAAAAAAIA/AAAAAG4AAAANAAAAAAAAACgAAAAAAACAPwAAAABuAAAADQAAAAAAAAApAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAKgAAAAAAAIA/AAAAAG4AAAANAAAAAAAAACsAAAAAAACAPwAAAABuAAAADQAAAAAAAAAsAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAALQAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAC4AAAAAAACAPwAAAABuAAAADQAAAAAAAAAvAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAMAAAAAAAAIA/AAAAAG4AAAANAAAAAAAAADEAAAAAAACAPwAAAABuAAAADQAAAAAAAAAyAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAMwAAAAAAAIA/AAAAAG4AAAANAAAAAAAAADQAAAAAAACAPwAAAABuAAAADQAAAAAAAAA1AAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAANgAAAAAAAIA/AAAAAG4AAAANAAAAAAAAADcAAAAAAACAPwAAAABuAAAADQAAAAAAAAA4AAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAOQAAAAAAAIA/AAAAAG4AAAANAAAAAAAAADoAAAAAAACAPwAAAABuAAAADQAAAAAAAAA7AAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAPAAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAD0AAAAAAACAPwAAAABuAAAADQAAAAAAAAA+AAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAPwAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAEAAAAAAAACAPwAAAABuAAAADQAAAAAAAABBAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAQgAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAEMAAAAAAACAPwAAAABuAAAADQAAAAAAAABEAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAARQAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAEYAAAAAAACAPwAAAABuAAAADQAAAAAAAABHAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAASAAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAEkAAAAAAACAPwAAAABuAAAADQAAAAAAAABKAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAASwAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAEwAAAAAAACAPwAAAABuAAAADQAAAAAAAABNAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAATgAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAE8AAAAAAACAPwAAAABuAAAADQAAAAAAAABQAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAUQAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAFIAAAAAAACAPwAAAABuAAAADQAAAAAAAABTAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAVAAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAFUAAAAAAACAPwAAAABuAAAADQAAAAAAAABWAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAVwAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAFgAAAAAAACAPwAAAABuAAAADQAAAAAAAABZAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAWgAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAFsAAAAAAACAPwAAAABuAAAADQAAAAAAAABcAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAXQAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAF4AAAAAAACAPwAAAABuAAAADQAAAAAAAABfAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAYAAAAAAAAIA/AAAAAG4AAAANAAAAAAAAAGEAAAAAAACAPwAAAABuAAAADQAAAAAAAABiAAAAAAAAgD8AAAAAbgAAAA0AAAAAAAAAYwAAAAAAAIA/AAAAAA==","region":[[500,""],[501,""],[502,""],[503,""],[504,"AAAAPwAAZAA="],[505,"AAAAAAAAAAAAAAAAAAA="],[506,"AAAAAAAAAAAAAAAAAACAPwAAAACQaYoFAAAAAJBpigUAAAAAAQAAAAAAAABAhBQA"],[507,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="],[507,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="],[508,"AAA="],[509,"AAAAAAAAgD8AAIA/7FE4Pg=="],[510,"AAAAAAAAAAAA"],[511,"AAAAAAAAAAAA"],[512,"AAAAAAAAAAAA"],[513,"AAAAAAAAAAAA"],[514,"AAAAAAAAAAAAAAAAAAAAAA=="],[514,"AAAAAAAAAAAAAAAAAAAAAA=="],[515,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="],[515,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="],[516,"AgACAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[516,"AAAAAAAAAAA="],[517,""],[4,""]],"d503":"hFsAAAAAAAACAAAABAAAAABELEcAAAAAAAAAAAAAAAAAAAAAEAAAAA==","d500":"PAA8AH8AAAAAAACAPwAAAD8BAAAAAAIAAA=="};
+
+  /*I18N_START*/
+  const I18N = {
+    es: {
+      title: "DWPMaker", h1: "DWPMaker", langLabel: "Idioma",
+      lead: "Convertí un audio (.wav con markers de Slicex, o .mp3, .ogg, .m4a, .flac…) en un programa de DirectWave (.dwp), sin abrir FL Studio. El archivo se procesa en este dispositivo y no se sube a ningún servidor.",
+      stepFile: "Archivo", pick: "Elegir archivo de audio", badgeDemo: "Ejemplo", scopeAria: "Forma de onda con los markers",
+      demoCap: "Así se ve un archivo con 3 markers: cada marker abre una región y cada región queda en una nota.",
+      colNote: "Nota", colFrom: "Desde", colDur: "Duración", regionsAria: "Regiones",
+      mkSummary: "Markers: agregar o cambiar",
+      mkHelp: "Tocá la forma de onda para poner un marker; tocá uno existente para quitarlo. O usá las opciones automáticas.",
+      mkSensLbl: "Detectar sonidos", sensHi: "Sensible (sonidos suaves)", sensMid: "Normal", sensLo: "Poco sensible (solo golpes fuertes)", mkDetect: "Detectar",
+      mkEqualLbl: "Dividir en partes iguales", mkEqual: "Dividir",
+      mkMsLbl: "Mover todos los markers (milisegundos)", mkBack: "◀ Antes", mkBackAria: "Mover antes", mkFwd: "Después ▶", mkFwdAria: "Mover después",
+      mkClear: "Quitar todos", mkRestore: "Restaurar los del archivo",
+      stepName: "Nombre del programa", nameLbl: "Nombre", namePh: "Mi programa",
+      stepMake: "Crear", qualityLbl: "Calidad del audio",
+      qHi: "Alta · loops a 32 bit, como FL (pesa el doble)", qStd: "Estándar · 16 bit, frecuencia original",
+      qLo: "Liviana · mitad de la frecuencia de muestreo", qMin: "Mínima · cuarta parte de la frecuencia",
+      optTrim: "Recortar silencios: conservar solo el primer sonido de cada región, como hace FL Studio.",
+      optLoop: "Crear loop automático con crossfade en los sonidos que se sostienen.",
+      loopNote: "Los sonidos que decaen o duran menos de 0,3 s quedan sin loop.",
+      make: "Crear .dwp", pickFile: "Elegí un archivo para empezar.", save: "Descargar .dwp",
+      howSummary: "Cómo se asignan las notas",
+      howText: "El primer marker queda en C5 (nota 60) y cada marker siguiente sube un semitono. La primera región también cubre las teclas más graves y la última las más agudas. Con más de 68 markers, la primera nota baja para que la última quede en la tecla 127; el máximo es 128. El audio anterior al primer marker se ignora, salvo que marques la opción para incluirlo. Cada región se guarda normalizada. La calidad Estándar usa 16 bit y la frecuencia original, como FL Studio. Alta guarda los loops a 32 bit, con el doble de peso. Liviana y Mínima bajan la frecuencia de muestreo a la mitad o a un cuarto: pesan menos pero pierden agudos. El loop automático busca un largo que sea un múltiplo del período del sonido y mezcla el final con el material anterior al inicio del loop, con el mismo tipo de crossfade que genera DirectWave.",
+      foot: "Hecho a partir de archivos de Slicex y de programas guardados por DirectWave. Probado con 3 y 15 regiones a 44,1 kHz.",
+      errNotWav: "No es un archivo WAV válido.", errNoFmt: "El WAV no tiene los bloques fmt y data.",
+      errUnsupported: "Formato de audio no soportado ({bits} bits, tipo {type}). Usá un WAV PCM o float.",
+      errNoChannels: "El WAV no tiene canales.", errNoAudio: "El WAV no tiene audio.",
+      errTooMany: "Hay {n} markers; el máximo es {max} (una región por tecla).",
+      errNoDecoder: "Este navegador no puede decodificar audio.",
+      errDecode: "No se pudo leer el archivo como audio. Probá con .wav, .mp3, .ogg, .m4a o .flac.",
+      readFail: "No se pudo leer el archivo.", createFail: "No se pudo crear el archivo.",
+      chanMono: "mono", chanStereo: "estéreo", chanN: "{n} canales", floatBits: "float {bits} bit", bitsFmt: "{bits} bit", converted: "convertido a WAV",
+      markers_one: "{n} marker", markers_other: "{n} markers",
+      hintPre: "Las regiones se llaman ", hintPost: " Se usan solo letras, números, espacio, guion y guion bajo.",
+      sizeNone: "Elegí un archivo para ver el tamaño estimado.",
+      sizeEst: "Tamaño: hasta {size} · {khz}, {depth}. El recorte de silencios puede bajarlo más.",
+      depthLoop32: "loops a 32 bit", depth16: "16 bit",
+      capRegions_one: "{n} región, de {a} a {b}.", capRegions_other: "{n} regiones, de {a} a {b}.",
+      noMarkers: "Este audio no tiene markers: se crea una sola región con todo el audio. Podés agregarlos en «Markers».",
+      introSkipped: "No se incluye el audio anterior al primer marker ({dur}).",
+      manyMarkers: "Con más de 68 markers las notas empiezan más abajo de C5 para llegar a la tecla 127.",
+      ready: "Listo para crear.",
+      introOpt: "Incluir el audio anterior al primer marker ({dur}) como una región más, con su propia nota.",
+      removeMarker: "Quitar el marker de {name}",
+      searching: "Buscando sonidos…", foundTooMany: "Se encontraron {n} sonidos y el máximo es {max}. Probá con menos sensibilidad.",
+      pickParts: "Elegí entre 2 y {max} partes.", nudgeRange: "Poné entre 1 y 2000 ms.", noMarkersToMove: "No hay markers para mover.",
+      movedBefore: "Markers movidos {ms} ms antes.", movedAfter: "Markers movidos {ms} ms después.",
+      converting: "Convirtiendo {name} a WAV…", reading: "Leyendo {name}…", creating: "Creando…", done: "Listo.",
+      regCount_one: "{n} región", regCount_other: "{n} regiones",
+      loopsNone: "ninguna con loop", loopCount_one: "{n} con loop", loopCount_other: "{n} con loop",
+      trimmedCount_one: "{n} recortada", trimmedCount_other: "{n} recortadas",
+      saveZip: "Guardar .zip con el .dwp",
+      saveZipNote: "Esta vista previa solo permite guardar archivos comunes: se entrega en un .zip. Descomprimilo y abrí el .dwp en DirectWave.",
+      saveDwp: "Descargar .dwp", saveNote: "Abrilo desde DirectWave (Archivo o Open).",
+      savedNative: "Listo: elegí dónde guardarlo.", shareTitle: "Guardar o abrir el .dwp",
+      cancelled: "Cancelaste el guardado.", saveFail: "No se pudo guardar el archivo.", dlStarted: "Descarga iniciada.", saved: "Guardado."
+    },
+    en: {
+      title: "DWPMaker", h1: "DWPMaker", langLabel: "Language",
+      lead: "Turn an audio file (.wav with Slicex markers, or .mp3, .ogg, .m4a, .flac…) into a DirectWave program (.dwp) without opening FL Studio. The file is processed on this device and never uploaded to any server.",
+      stepFile: "File", pick: "Choose audio file", badgeDemo: "Example", scopeAria: "Waveform with markers",
+      demoCap: "This is how a file with 3 markers looks: each marker starts a region, and each region is assigned to a note.",
+      colNote: "Note", colFrom: "From", colDur: "Length", regionsAria: "Regions",
+      mkSummary: "Markers: add or change",
+      mkHelp: "Tap the waveform to add a marker; tap an existing one to remove it. Or use the automatic options.",
+      mkSensLbl: "Detect sounds", sensHi: "Sensitive (soft sounds)", sensMid: "Normal", sensLo: "Less sensitive (loud hits only)", mkDetect: "Detect",
+      mkEqualLbl: "Split into equal parts", mkEqual: "Split",
+      mkMsLbl: "Shift all markers (milliseconds)", mkBack: "◀ Earlier", mkBackAria: "Move earlier", mkFwd: "Later ▶", mkFwdAria: "Move later",
+      mkClear: "Remove all", mkRestore: "Restore the file's markers",
+      stepName: "Program name", nameLbl: "Name", namePh: "My program",
+      stepMake: "Create", qualityLbl: "Audio quality",
+      qHi: "High · 32-bit loops, like FL (twice the size)", qStd: "Standard · 16-bit, original sample rate",
+      qLo: "Light · half the sample rate", qMin: "Minimum · quarter of the sample rate",
+      optTrim: "Trim silences: keep only the first sound of each region, as FL Studio does.",
+      optLoop: "Create an automatic loop with crossfade on sustained sounds.",
+      loopNote: "Sounds that decay or last less than 0.3 s are left without a loop.",
+      make: "Create .dwp", pickFile: "Choose a file to get started.", save: "Download .dwp",
+      howSummary: "How notes are assigned",
+      howText: "The first marker goes on C5 (note 60) and each following marker goes up one semitone. The first region also covers the lowest keys and the last one the highest. With more than 68 markers, the first note moves down so the last one lands on key 127; the maximum is 128. Audio before the first marker is ignored unless you tick the option to include it. Each region is saved normalized. Standard quality uses 16-bit and the original sample rate, like FL Studio. High saves loops at 32-bit, at twice the size. Light and Minimum lower the sample rate to half or a quarter: they are smaller but lose high frequencies. The automatic loop looks for a length that is a multiple of the sound's period and blends the end with the material before the loop start, using the same kind of crossfade DirectWave generates.",
+      foot: "Made from Slicex files and programs saved by DirectWave. Tested with 3 and 15 regions at 44.1 kHz.",
+      errNotWav: "Not a valid WAV file.", errNoFmt: "The WAV has no fmt and data chunks.",
+      errUnsupported: "Unsupported audio format ({bits} bits, type {type}). Use a PCM or float WAV.",
+      errNoChannels: "The WAV has no channels.", errNoAudio: "The WAV has no audio.",
+      errTooMany: "There are {n} markers; the maximum is {max} (one region per key).",
+      errNoDecoder: "This browser cannot decode audio.",
+      errDecode: "Could not read the file as audio. Try .wav, .mp3, .ogg, .m4a or .flac.",
+      readFail: "Could not read the file.", createFail: "Could not create the file.",
+      chanMono: "mono", chanStereo: "stereo", chanN: "{n} channels", floatBits: "float {bits} bit", bitsFmt: "{bits} bit", converted: "converted to WAV",
+      markers_one: "{n} marker", markers_other: "{n} markers",
+      hintPre: "Regions are named ", hintPost: " Only letters, numbers, space, hyphen and underscore are used.",
+      sizeNone: "Choose a file to see the estimated size.",
+      sizeEst: "Size: up to {size} · {khz}, {depth}. Silence trimming can lower it further.",
+      depthLoop32: "32-bit loops", depth16: "16-bit",
+      capRegions_one: "{n} region, from {a} to {b}.", capRegions_other: "{n} regions, from {a} to {b}.",
+      noMarkers: "This audio has no markers: a single region with the whole audio is created. You can add some under “Markers”.",
+      introSkipped: "The audio before the first marker ({dur}) is not included.",
+      manyMarkers: "With more than 68 markers the notes start below C5 so the last one reaches key 127.",
+      ready: "Ready to create.",
+      introOpt: "Include the audio before the first marker ({dur}) as an extra region with its own note.",
+      removeMarker: "Remove the marker at {name}",
+      searching: "Looking for sounds…", foundTooMany: "{n} sounds were found and the maximum is {max}. Try a lower sensitivity.",
+      pickParts: "Choose between 2 and {max} parts.", nudgeRange: "Enter a value between 1 and 2000 ms.", noMarkersToMove: "There are no markers to move.",
+      movedBefore: "Markers moved {ms} ms earlier.", movedAfter: "Markers moved {ms} ms later.",
+      converting: "Converting {name} to WAV…", reading: "Reading {name}…", creating: "Creating…", done: "Done.",
+      regCount_one: "{n} region", regCount_other: "{n} regions",
+      loopsNone: "none with loop", loopCount_one: "{n} with loop", loopCount_other: "{n} with loop",
+      trimmedCount_one: "{n} trimmed", trimmedCount_other: "{n} trimmed",
+      saveZip: "Save .zip with the .dwp",
+      saveZipNote: "This preview only allows saving common files: it is delivered in a .zip. Unzip it and open the .dwp in DirectWave.",
+      saveDwp: "Download .dwp", saveNote: "Open it from DirectWave (File or Open).",
+      savedNative: "Done: choose where to save it.", shareTitle: "Save or open the .dwp",
+      cancelled: "Saving cancelled.", saveFail: "Could not save the file.", dlStarted: "Download started.", saved: "Saved."
+    },
+    "pt-BR": {
+      title: "DWPMaker", h1: "DWPMaker", langLabel: "Idioma",
+      lead: "Converta um áudio (.wav com marcadores do Slicex, ou .mp3, .ogg, .m4a, .flac…) em um programa do DirectWave (.dwp), sem abrir o FL Studio. O arquivo é processado neste dispositivo e não é enviado a nenhum servidor.",
+      stepFile: "Arquivo", pick: "Escolher arquivo de áudio", badgeDemo: "Exemplo", scopeAria: "Forma de onda com os marcadores",
+      demoCap: "Assim fica um arquivo com 3 marcadores: cada marcador abre uma região e cada região fica em uma nota.",
+      colNote: "Nota", colFrom: "Início", colDur: "Duração", regionsAria: "Regiões",
+      mkSummary: "Marcadores: adicionar ou alterar",
+      mkHelp: "Toque na forma de onda para colocar um marcador; toque em um existente para removê-lo. Ou use as opções automáticas.",
+      mkSensLbl: "Detectar sons", sensHi: "Sensível (sons suaves)", sensMid: "Normal", sensLo: "Pouco sensível (só batidas fortes)", mkDetect: "Detectar",
+      mkEqualLbl: "Dividir em partes iguais", mkEqual: "Dividir",
+      mkMsLbl: "Mover todos os marcadores (milissegundos)", mkBack: "◀ Antes", mkBackAria: "Mover para antes", mkFwd: "Depois ▶", mkFwdAria: "Mover para depois",
+      mkClear: "Remover todos", mkRestore: "Restaurar os do arquivo",
+      stepName: "Nome do programa", nameLbl: "Nome", namePh: "Meu programa",
+      stepMake: "Criar", qualityLbl: "Qualidade do áudio",
+      qHi: "Alta · loops em 32 bits, como no FL (pesa o dobro)", qStd: "Padrão · 16 bits, taxa original",
+      qLo: "Leve · metade da taxa de amostragem", qMin: "Mínima · um quarto da taxa",
+      optTrim: "Cortar silêncios: manter só o primeiro som de cada região, como o FL Studio faz.",
+      optLoop: "Criar loop automático com crossfade nos sons que se sustentam.",
+      loopNote: "Sons que decaem ou duram menos de 0,3 s ficam sem loop.",
+      make: "Criar .dwp", pickFile: "Escolha um arquivo para começar.", save: "Baixar .dwp",
+      howSummary: "Como as notas são atribuídas",
+      howText: "O primeiro marcador fica em C5 (nota 60) e cada marcador seguinte sobe um semitom. A primeira região também cobre as teclas mais graves e a última, as mais agudas. Com mais de 68 marcadores, a primeira nota desce para que a última fique na tecla 127; o máximo é 128. O áudio anterior ao primeiro marcador é ignorado, a menos que você marque a opção de incluí-lo. Cada região é salva normalizada. A qualidade Padrão usa 16 bits e a taxa original, como o FL Studio. Alta salva os loops em 32 bits, com o dobro do peso. Leve e Mínima reduzem a taxa de amostragem à metade ou a um quarto: pesam menos, mas perdem agudos. O loop automático procura um comprimento que seja múltiplo do período do som e mistura o final com o material anterior ao início do loop, com o mesmo tipo de crossfade que o DirectWave gera.",
+      foot: "Feito a partir de arquivos do Slicex e de programas salvos pelo DirectWave. Testado com 3 e 15 regiões a 44,1 kHz.",
+      errNotWav: "Não é um arquivo WAV válido.", errNoFmt: "O WAV não tem os blocos fmt e data.",
+      errUnsupported: "Formato de áudio não suportado ({bits} bits, tipo {type}). Use um WAV PCM ou float.",
+      errNoChannels: "O WAV não tem canais.", errNoAudio: "O WAV não tem áudio.",
+      errTooMany: "Há {n} marcadores; o máximo é {max} (uma região por tecla).",
+      errNoDecoder: "Este navegador não consegue decodificar áudio.",
+      errDecode: "Não foi possível ler o arquivo como áudio. Tente .wav, .mp3, .ogg, .m4a ou .flac.",
+      readFail: "Não foi possível ler o arquivo.", createFail: "Não foi possível criar o arquivo.",
+      chanMono: "mono", chanStereo: "estéreo", chanN: "{n} canais", floatBits: "float {bits} bits", bitsFmt: "{bits} bits", converted: "convertido para WAV",
+      markers_one: "{n} marcador", markers_other: "{n} marcadores",
+      hintPre: "As regiões se chamam ", hintPost: " São usados apenas letras, números, espaço, hífen e sublinhado.",
+      sizeNone: "Escolha um arquivo para ver o tamanho estimado.",
+      sizeEst: "Tamanho: até {size} · {khz}, {depth}. O corte de silêncios pode reduzi-lo ainda mais.",
+      depthLoop32: "loops em 32 bits", depth16: "16 bits",
+      capRegions_one: "{n} região, de {a} a {b}.", capRegions_other: "{n} regiões, de {a} a {b}.",
+      noMarkers: "Este áudio não tem marcadores: será criada uma única região com todo o áudio. Você pode adicioná-los em «Marcadores».",
+      introSkipped: "O áudio anterior ao primeiro marcador ({dur}) não é incluído.",
+      manyMarkers: "Com mais de 68 marcadores, as notas começam abaixo de C5 para chegar à tecla 127.",
+      ready: "Pronto para criar.",
+      introOpt: "Incluir o áudio anterior ao primeiro marcador ({dur}) como uma região a mais, com sua própria nota.",
+      removeMarker: "Remover o marcador de {name}",
+      searching: "Procurando sons…", foundTooMany: "Foram encontrados {n} sons e o máximo é {max}. Tente com menos sensibilidade.",
+      pickParts: "Escolha entre 2 e {max} partes.", nudgeRange: "Informe um valor entre 1 e 2000 ms.", noMarkersToMove: "Não há marcadores para mover.",
+      movedBefore: "Marcadores movidos {ms} ms para antes.", movedAfter: "Marcadores movidos {ms} ms para depois.",
+      converting: "Convertendo {name} para WAV…", reading: "Lendo {name}…", creating: "Criando…", done: "Pronto.",
+      regCount_one: "{n} região", regCount_other: "{n} regiões",
+      loopsNone: "nenhuma com loop", loopCount_one: "{n} com loop", loopCount_other: "{n} com loop",
+      trimmedCount_one: "{n} cortada", trimmedCount_other: "{n} cortadas",
+      saveZip: "Salvar .zip com o .dwp",
+      saveZipNote: "Esta visualização só permite salvar arquivos comuns: ele é entregue em um .zip. Descompacte e abra o .dwp no DirectWave.",
+      saveDwp: "Baixar .dwp", saveNote: "Abra-o pelo DirectWave (Arquivo ou Open).",
+      savedNative: "Pronto: escolha onde salvar.", shareTitle: "Salvar ou abrir o .dwp",
+      cancelled: "Você cancelou o salvamento.", saveFail: "Não foi possível salvar o arquivo.", dlStarted: "Download iniciado.", saved: "Salvo."
+    },
+    "pt-PT": {
+      title: "DWPMaker", h1: "DWPMaker", langLabel: "Idioma",
+      lead: "Converta um áudio (.wav com marcadores do Slicex, ou .mp3, .ogg, .m4a, .flac…) num programa do DirectWave (.dwp), sem abrir o FL Studio. O ficheiro é processado neste dispositivo e não é enviado para nenhum servidor.",
+      stepFile: "Ficheiro", pick: "Escolher ficheiro de áudio", badgeDemo: "Exemplo", scopeAria: "Forma de onda com os marcadores",
+      demoCap: "É assim que fica um ficheiro com 3 marcadores: cada marcador abre uma região e cada região fica numa nota.",
+      colNote: "Nota", colFrom: "Início", colDur: "Duração", regionsAria: "Regiões",
+      mkSummary: "Marcadores: adicionar ou alterar",
+      mkHelp: "Toque na forma de onda para colocar um marcador; toque num existente para o remover. Ou use as opções automáticas.",
+      mkSensLbl: "Detetar sons", sensHi: "Sensível (sons suaves)", sensMid: "Normal", sensLo: "Pouco sensível (só pancadas fortes)", mkDetect: "Detetar",
+      mkEqualLbl: "Dividir em partes iguais", mkEqual: "Dividir",
+      mkMsLbl: "Mover todos os marcadores (milissegundos)", mkBack: "◀ Antes", mkBackAria: "Mover para antes", mkFwd: "Depois ▶", mkFwdAria: "Mover para depois",
+      mkClear: "Remover todos", mkRestore: "Restaurar os do ficheiro",
+      stepName: "Nome do programa", nameLbl: "Nome", namePh: "O meu programa",
+      stepMake: "Criar", qualityLbl: "Qualidade do áudio",
+      qHi: "Alta · loops a 32 bits, como no FL (pesa o dobro)", qStd: "Normal · 16 bits, frequência original",
+      qLo: "Leve · metade da frequência de amostragem", qMin: "Mínima · um quarto da frequência",
+      optTrim: "Cortar silêncios: manter só o primeiro som de cada região, como faz o FL Studio.",
+      optLoop: "Criar loop automático com crossfade nos sons que se sustentam.",
+      loopNote: "Os sons que decaem ou duram menos de 0,3 s ficam sem loop.",
+      make: "Criar .dwp", pickFile: "Escolha um ficheiro para começar.", save: "Descarregar .dwp",
+      howSummary: "Como as notas são atribuídas",
+      howText: "O primeiro marcador fica em C5 (nota 60) e cada marcador seguinte sobe um meio-tom. A primeira região também cobre as teclas mais graves e a última as mais agudas. Com mais de 68 marcadores, a primeira nota desce para que a última fique na tecla 127; o máximo é 128. O áudio anterior ao primeiro marcador é ignorado, a menos que assinale a opção de o incluir. Cada região é guardada normalizada. A qualidade Normal usa 16 bits e a frequência original, como o FL Studio. Alta guarda os loops a 32 bits, com o dobro do peso. Leve e Mínima reduzem a frequência de amostragem para metade ou um quarto: pesam menos, mas perdem agudos. O loop automático procura um comprimento que seja múltiplo do período do som e mistura o final com o material anterior ao início do loop, com o mesmo tipo de crossfade que o DirectWave gera.",
+      foot: "Feito a partir de ficheiros do Slicex e de programas guardados pelo DirectWave. Testado com 3 e 15 regiões a 44,1 kHz.",
+      errNotWav: "Não é um ficheiro WAV válido.", errNoFmt: "O WAV não tem os blocos fmt e data.",
+      errUnsupported: "Formato de áudio não suportado ({bits} bits, tipo {type}). Use um WAV PCM ou float.",
+      errNoChannels: "O WAV não tem canais.", errNoAudio: "O WAV não tem áudio.",
+      errTooMany: "Há {n} marcadores; o máximo é {max} (uma região por tecla).",
+      errNoDecoder: "Este navegador não consegue descodificar áudio.",
+      errDecode: "Não foi possível ler o ficheiro como áudio. Experimente .wav, .mp3, .ogg, .m4a ou .flac.",
+      readFail: "Não foi possível ler o ficheiro.", createFail: "Não foi possível criar o ficheiro.",
+      chanMono: "mono", chanStereo: "estéreo", chanN: "{n} canais", floatBits: "float {bits} bits", bitsFmt: "{bits} bits", converted: "convertido para WAV",
+      markers_one: "{n} marcador", markers_other: "{n} marcadores",
+      hintPre: "As regiões chamam-se ", hintPost: " São usados apenas letras, números, espaço, hífen e sublinhado.",
+      sizeNone: "Escolha um ficheiro para ver o tamanho estimado.",
+      sizeEst: "Tamanho: até {size} · {khz}, {depth}. O corte de silêncios pode reduzi-lo ainda mais.",
+      depthLoop32: "loops a 32 bits", depth16: "16 bits",
+      capRegions_one: "{n} região, de {a} a {b}.", capRegions_other: "{n} regiões, de {a} a {b}.",
+      noMarkers: "Este áudio não tem marcadores: é criada uma única região com todo o áudio. Pode adicioná-los em «Marcadores».",
+      introSkipped: "O áudio anterior ao primeiro marcador ({dur}) não é incluído.",
+      manyMarkers: "Com mais de 68 marcadores, as notas começam abaixo de C5 para chegar à tecla 127.",
+      ready: "Pronto para criar.",
+      introOpt: "Incluir o áudio anterior ao primeiro marcador ({dur}) como mais uma região, com a sua própria nota.",
+      removeMarker: "Remover o marcador de {name}",
+      searching: "A procurar sons…", foundTooMany: "Foram encontrados {n} sons e o máximo é {max}. Experimente com menos sensibilidade.",
+      pickParts: "Escolha entre 2 e {max} partes.", nudgeRange: "Indique um valor entre 1 e 2000 ms.", noMarkersToMove: "Não há marcadores para mover.",
+      movedBefore: "Marcadores movidos {ms} ms para antes.", movedAfter: "Marcadores movidos {ms} ms para depois.",
+      converting: "A converter {name} para WAV…", reading: "A ler {name}…", creating: "A criar…", done: "Pronto.",
+      regCount_one: "{n} região", regCount_other: "{n} regiões",
+      loopsNone: "nenhuma com loop", loopCount_one: "{n} com loop", loopCount_other: "{n} com loop",
+      trimmedCount_one: "{n} cortada", trimmedCount_other: "{n} cortadas",
+      saveZip: "Guardar .zip com o .dwp",
+      saveZipNote: "Esta pré-visualização só permite guardar ficheiros comuns: é entregue num .zip. Descomprima-o e abra o .dwp no DirectWave.",
+      saveDwp: "Descarregar .dwp", saveNote: "Abra-o a partir do DirectWave (Ficheiro ou Open).",
+      savedNative: "Pronto: escolha onde o guardar.", shareTitle: "Guardar ou abrir o .dwp",
+      cancelled: "Guardar cancelado.", saveFail: "Não foi possível guardar o ficheiro.", dlStarted: "Transferência iniciada.", saved: "Guardado."
+    }
+  };
+  /*I18N_END*/
+
+  const LANGS = { es: "Español", en: "English", "pt-BR": "Português (Brasil)", "pt-PT": "Português (Portugal)" };
+  const LS_KEY = 'dwpmaker.lang';
+  function detectLang() {
+    try { const v = localStorage.getItem(LS_KEY); if (v && I18N[v]) return v; } catch (e) {}
+    const list = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || 'en'];
+    for (const l of list) {
+      const x = String(l).toLowerCase();
+      if (x.startsWith('es')) return 'es';
+      if (x === 'pt' || x === 'pt-br') return 'pt-BR';
+      if (x.startsWith('pt')) return 'pt-PT';
+      if (x.startsWith('en')) return 'en';
+    }
+    return 'en';
+  }
+  let lang = detectLang();
+  let lastSay = null;        // { key, p, kind }: el mensaje de estado se vuelve a traducir al cambiar de idioma
+  function t(key, p) {
+    let str = I18N[lang][key];
+    if (str == null) str = I18N.en[key];
+    if (str == null) return key;
+    return p ? str.replace(/\{(\w+)\}/g, (m, k) => (k in p ? p[k] : m)) : str;
+  }
+  const tn = (key, n, p) => t(key + (n === 1 ? '_one' : '_other'), Object.assign({ n }, p));
+  const dec = (str) => lang === 'en' ? str : str.replace('.', ',');
+  const kerr = (key, p) => Object.assign(new Error(t(key, p)), { key, params: p });
+  W2D.setTranslator(t);
+  function applyStatic() {
+    document.documentElement.lang = lang;
+    document.title = t('title');
+    document.querySelectorAll('[data-i18n]').forEach((n) => { n.textContent = t(n.getAttribute('data-i18n')); });
+    document.querySelectorAll('[data-i18n-ph]').forEach((n) => n.setAttribute('placeholder', t(n.getAttribute('data-i18n-ph'))));
+    document.querySelectorAll('[data-i18n-aria]').forEach((n) => n.setAttribute('aria-label', t(n.getAttribute('data-i18n-aria'))));
+  }
+
   const $ = (id) => document.getElementById(id);
-  const el = { file: $('file'), info: $('info'), scope: $('scope'), badge: $('demoBadge'), cap: $('scopeCap'), regions: $('regions'),
+  const el = { lang: $('lang'), file: $('file'), info: $('info'), scope: $('scope'), badge: $('demoBadge'), cap: $('scopeCap'), regions: $('regions'),
     quality: $('quality'), sizeEst: $('sizeEst'), optTrim: $('optTrim'), optLoop: $('optLoop'), intro: $('intro'), introRow: $('introRow'), mk: $('mk'), mkSens: $('mkSens'), mkDetect: $('mkDetect'), mkN: $('mkN'), mkEqual: $('mkEqual'), mkClear: $('mkClear'), mkBack: $('mkBack'), mkFwd: $('mkFwd'), mkMs: $('mkMs'), mkRestore: $('mkRestore'), introText: $('introText'), pname: $('pname'), hint: $('nameHint'), make: $('make'), prog: $('prog'), msg: $('msg'), result: $('result'), okline: $('okline'), save: $('save'), saveNote: $('saveNote') };
   let state = null;          // { info, plan, fileName, peaks }
   let built = null;          // { blob, filename, regions }
@@ -567,9 +836,12 @@ const W2D = (function () {
   /* ---------- utilidades ---------- */
   const fmtTime = (fr, rate) => { const s = fr / rate, m = Math.floor(s / 60); return m + ':' + (s - m * 60).toFixed(3).padStart(6, '0'); };
   const fmtDur = (fr, rate) => (fr / rate).toFixed(3) + ' s';
-  const fmtSize = (n) => n > 1048576 ? (n / 1048576).toFixed(1).replace('.', ',') + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
-  const chanText = (c) => c === 1 ? 'mono' : c === 2 ? 'estéreo' : c + ' canales';
-  function say(text, kind) { el.msg.textContent = text; el.msg.className = 'msg' + (kind ? ' ' + kind : ''); }
+  const fmtSize = (n) => n > 1048576 ? dec((n / 1048576).toFixed(1)) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+  const chanText = (c) => c === 1 ? t('chanMono') : c === 2 ? t('chanStereo') : t('chanN', { n: c });
+  function show(text, kind) { el.msg.textContent = text; el.msg.className = 'msg' + (kind ? ' ' + kind : ''); }
+  function say(key, p, kind) { lastSay = { key, p, kind }; show(t(key, p), kind); }
+  function sayRaw(text, kind) { lastSay = null; show(text, kind); }
+  function sayErr(e) { if (e && e.key) say(e.key, e.params, 'err'); else sayRaw((e && e.message) || t('readFail'), 'err'); }
   const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 
   /* ---------- forma de onda ---------- */
@@ -623,7 +895,7 @@ const W2D = (function () {
     for (const r of rows) {
       const li = document.createElement('li');
       for (const [cls, txt] of [['note', r.name], ['t', r.from], ['t', r.dur]]) { const s = document.createElement('span'); s.className = cls; s.textContent = txt; li.appendChild(s); }
-      if (r.marker != null) { const x = document.createElement('button'); x.className = 'x secondary'; x.type = 'button'; x.textContent = '×'; x.setAttribute('aria-label', 'Quitar el marker de ' + r.name); x.addEventListener('click', () => setMarkers(state.info.markers.filter((m) => m !== r.marker))); li.appendChild(x); } else li.appendChild(document.createElement('span'));
+      if (r.marker != null) { const x = document.createElement('button'); x.className = 'x secondary'; x.type = 'button'; x.textContent = '×'; x.setAttribute('aria-label', t('removeMarker', { name: r.name })); x.addEventListener('click', () => setMarkers(state.info.markers.filter((m) => m !== r.marker))); li.appendChild(x); } else li.appendChild(document.createElement('span'));
       el.regions.appendChild(li);
     }
   }
@@ -634,25 +906,25 @@ const W2D = (function () {
 
   /* ---------- nombre ---------- */
   function updateHint() {
-    const n = W2D.cleanName(el.pname.value || 'programa');
+    const n = W2D.cleanName(el.pname.value);
     const second = state && state.plan[1] ? state.plan[1].name : 'C#5';
     const first = state ? state.plan[0].name : 'C5';
     el.hint.textContent = '';
-    el.hint.append('Las regiones se llaman ');
+    el.hint.append(t('hintPre'));
     const a = document.createElement('code'); a.textContent = n + '_' + first + '_127'; el.hint.append(a, ', ');
     const b = document.createElement('code'); b.textContent = n + '_' + second + '_127'; el.hint.append(b, '…');
-    if (el.pname.value && n !== el.pname.value.trim()) { el.hint.append(' Se usan solo letras, números, espacio, guion y guion bajo.'); }
+    if (el.pname.value && n !== el.pname.value.trim()) { el.hint.append(t('hintPost')); }
   }
   el.pname.addEventListener('input', () => { updateHint(); resetResult(); });
   function currentOpts() {
     const q = el.quality.value;
     return { trim: el.optTrim.checked, loop: el.optLoop.checked, rateDiv: q === 'lo' ? 2 : q === 'min' ? 4 : 1, loopBits: q === 'hi' ? 32 : 16 };
   }
-  const fmtKhz = (hz) => (hz / 1000).toFixed(hz % 1000 === 0 ? 0 : 3).replace(/0+$/, '').replace(/\.$/, '').replace('.', ',') + ' kHz';
+  const fmtKhz = (hz) => dec((hz / 1000).toFixed(3).replace(/\.?0+$/, '')) + ' kHz';
   function updateEstimate() {
-    if (!state) { el.sizeEst.textContent = 'Elegí un archivo para ver el tamaño estimado.'; return; }
+    if (!state) { el.sizeEst.textContent = t('sizeNone'); return; }
     const o = currentOpts(), rate = state.info.fmt.rate / o.rateDiv;
-    el.sizeEst.textContent = 'Tamaño: hasta ' + fmtSize(W2D.estimateSize(state.info, o)) + ' · ' + fmtKhz(rate) + ', ' + (o.loop && o.loopBits === 32 ? 'loops a 32 bit' : '16 bit') + '. El recorte de silencios puede bajarlo más.';
+    el.sizeEst.textContent = t('sizeEst', { size: fmtSize(W2D.estimateSize(state.info, o)), khz: fmtKhz(rate), depth: t(o.loop && o.loopBits === 32 ? 'depthLoop32' : 'depth16') });
   }
   function limitQuality(rate) {
     for (const [v, div] of [['lo', 2], ['min', 4]]) el.quality.querySelector('option[value=' + v + ']').disabled = rate / div < 8000;
@@ -662,28 +934,32 @@ const W2D = (function () {
 
   /* ---------- carga de archivo ---------- */
   function resetResult() { built = null; el.result.hidden = true; el.prog.hidden = true; }
+  function renderPlan() {
+    const info = state.info, plan = state.plan, mset = new Set(info.markers);
+    listRegions(plan.map((r) => ({ marker: mset.has(r.start) ? r.start : null, name: r.name, from: fmtTime(r.start, info.fmt.rate), dur: fmtDur(r.len, info.fmt.rate) })));
+    el.cap.textContent = tn('capRegions', plan.length, { a: plan[0].name, b: plan[plan.length - 1].name });
+    updateHint(); updateEstimate(); draw();
+  }
   function refreshPlan() {
     const info = state.info; info.includeIntro = el.intro.checked;
-    const plan = W2D.plan(info); state.plan = plan;
-    const mset = new Set(info.markers);
-    listRegions(plan.map((r) => ({ marker: mset.has(r.start) ? r.start : null, name: r.name, from: fmtTime(r.start, info.fmt.rate), dur: fmtDur(r.len, info.fmt.rate) })));
-    el.cap.textContent = plan.length + (plan.length === 1 ? ' región' : ' regiones') + ', de ' + plan[0].name + ' a ' + plan[plan.length - 1].name + '.';
-    updateHint(); updateEstimate(); draw();
-    if (info.markers.length === 0) say('Este audio no tiene markers: se crea una sola región con todo el audio. Podés agregarlos en «Markers».', 'warn');
-    else if (info.introFrames && !info.includeIntro) say('No se incluye el audio anterior al primer marker (' + fmtDur(info.introFrames, info.fmt.rate) + ').', 'warn');
-    else if (plan.length > 68) say('Con más de 68 markers las notas empiezan más abajo de C5 para llegar a la tecla 127.', 'warn');
-    else say('Listo para crear.');
+    state.plan = W2D.plan(info);
+    renderPlan();
+    const plan = state.plan;
+    if (info.markers.length === 0) say('noMarkers', null, 'warn');
+    else if (info.introFrames && !info.includeIntro) say('introSkipped', { dur: fmtDur(info.introFrames, info.fmt.rate) }, 'warn');
+    else if (plan.length > 68) say('manyMarkers', null, 'warn');
+    else say('ready');
   }
-  el.intro.addEventListener('change', () => { if (!state) return; resetResult(); try { refreshPlan(); } catch (e) { el.intro.checked = false; say(e.message, 'err'); } });
+  el.intro.addEventListener('change', () => { if (!state) return; resetResult(); try { refreshPlan(); } catch (e) { el.intro.checked = false; sayErr(e); } });
   function renderFacts() {
     const info = state.info; el.info.hidden = false; el.info.textContent = '';
-    const items = [[state.fileName, 'fname'], [fmtTime(info.frames, info.fmt.rate)], [(info.fmt.rate / 1000).toString().replace('.', ',') + ' kHz'], [info.fmt.tag === 3 ? 'float ' + info.fmt.bits + ' bit' : info.fmt.bits + ' bit'], [chanText(info.fmt.channels)], [state.conv ? 'convertido a WAV' : ''], [info.markers.length + (info.markers.length === 1 ? ' marker' : ' markers')]];
+    const items = [[state.fileName, 'fname'], [fmtTime(info.frames, info.fmt.rate)], [dec((info.fmt.rate / 1000).toString()) + ' kHz'], [t(info.fmt.tag === 3 ? 'floatBits' : 'bitsFmt', { bits: info.fmt.bits })], [chanText(info.fmt.channels)], [state.conv ? t('converted') : ''], [tn('markers', info.markers.length)]];
     for (const [txt, cls] of items) { if (!txt) continue; const b = document.createElement(cls ? 'span' : 'b'); if (cls) b.className = cls; b.textContent = txt; el.info.appendChild(b); }
   }
   function syncIntro() {
     const info = state.info; info.introFrames = info.markers.length && info.markers[0] > 0 ? info.markers[0] : 0;
     el.introRow.hidden = !info.introFrames; if (!info.introFrames) { el.intro.checked = false; info.includeIntro = false; }
-    else el.introText.textContent = 'Incluir el audio anterior al primer marker (' + fmtDur(info.introFrames, info.fmt.rate) + ') como una región más, con su propia nota.';
+    else el.introText.textContent = t('introOpt', { dur: fmtDur(info.introFrames, info.fmt.rate) });
   }
   function setMarkers(arr) {
     if (!state) return;
@@ -691,7 +967,7 @@ const W2D = (function () {
     info.markers = [...new Set(arr.filter((m) => m >= 0 && m < info.frames))].sort((a, b) => a - b);
     resetResult();
     try { syncIntro(); refreshPlan(); }
-    catch (e) { info.markers = prev; syncIntro(); el.intro.checked = prevIntro; info.includeIntro = prevIntro; refreshPlan(); say(e.message, 'err'); }
+    catch (e) { info.markers = prev; syncIntro(); el.intro.checked = prevIntro; info.includeIntro = prevIntro; refreshPlan(); sayErr(e); }
     renderFacts();
     el.mkClear.disabled = info.markers.length === 0;
     el.mkRestore.disabled = state.orig.length === info.markers.length && state.orig.every((v, i) => v === info.markers[i]);
@@ -699,28 +975,28 @@ const W2D = (function () {
   el.mkDetect.addEventListener('click', () => {
     if (!state) return;
     const p = { hi: { thrDb: -60, gapMs: 60 }, mid: { thrDb: -50, gapMs: 120 }, lo: { thrDb: -40, gapMs: 250 } }[el.mkSens.value];
-    say('Buscando sonidos…'); el.mkDetect.disabled = true;
+    say('searching'); el.mkDetect.disabled = true;
     setTimeout(() => {
       const m = W2D.detectMarkers(state.info, p).map((v) => v > 0 ? W2D.snapMarker(state.info, v, 3) : 0);
       el.mkDetect.disabled = false;
-      if (m.length > W2D.MAX_REGIONS) { say('Se encontraron ' + m.length + ' sonidos y el máximo es ' + W2D.MAX_REGIONS + '. Probá con menos sensibilidad.', 'err'); return; }
+      if (m.length > W2D.MAX_REGIONS) { say('foundTooMany', { n: m.length, max: W2D.MAX_REGIONS }, 'err'); return; }
       setMarkers(m);
     }, 30);
   });
   el.mkEqual.addEventListener('click', () => {
     if (!state) return;
     const n = parseInt(el.mkN.value, 10);
-    if (!(n >= 2 && n <= W2D.MAX_REGIONS)) { say('Elegí entre 2 y ' + W2D.MAX_REGIONS + ' partes.', 'err'); return; }
+    if (!(n >= 2 && n <= W2D.MAX_REGIONS)) { say('pickParts', { max: W2D.MAX_REGIONS }, 'err'); return; }
     setMarkers(W2D.equalMarkers(state.info, n));
   });
   function nudge(dir) {
     if (!state) return;
     const ms = parseFloat(el.mkMs.value);
-    if (!(ms > 0 && ms <= 2000)) { say('Poné entre 1 y 2000 ms.', 'err'); return; }
+    if (!(ms > 0 && ms <= 2000)) { say('nudgeRange', null, 'err'); return; }
     const info = state.info, d = Math.round(info.fmt.rate * ms / 1000) * dir;
-    if (!info.markers.length) { say('No hay markers para mover.', 'warn'); return; }
+    if (!info.markers.length) { say('noMarkersToMove', null, 'warn'); return; }
     setMarkers(info.markers.map((m) => Math.max(0, m + d)));
-    say('Markers movidos ' + ms + ' ms ' + (dir < 0 ? 'antes' : 'después') + '.');
+    say(dir < 0 ? 'movedBefore' : 'movedAfter', { ms });
   }
   el.mkBack.addEventListener('click', () => nudge(-1));
   el.mkFwd.addEventListener('click', () => nudge(1));
@@ -738,12 +1014,12 @@ const W2D = (function () {
   /* cualquier formato que el navegador sepa decodificar -> WAV PCM de 24 bit en memoria */
   async function decodeToWav(buf) {
     const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) throw new Error('Este navegador no puede decodificar audio.');
+    if (!AC) throw kerr('errNoDecoder');
     let ctx; try { ctx = new AC({ sampleRate: 44100 }); } catch (e) { ctx = new AC(); }
     let ab;
     try {
       ab = await new Promise((ok, no) => { const p = ctx.decodeAudioData(buf.slice(0), ok, no); if (p && p.catch) p.catch(no); });
-    } catch (e) { throw new Error('No se pudo leer el archivo como audio. Probá con .wav, .mp3, .ogg, .m4a o .flac.'); }
+    } catch (e) { throw kerr('errDecode'); }
     finally { try { ctx.close(); } catch (e) {} }
     const ch = Math.min(2, ab.numberOfChannels), n = ab.length, rate = ab.sampleRate, out = new ArrayBuffer(44 + n * ch * 3), dv = new DataView(out);
     const tag = (o, t) => { for (let i = 0; i < 4; i++) dv.setUint8(o + i, t.charCodeAt(i)); };
@@ -761,14 +1037,14 @@ const W2D = (function () {
     const buf = await file.arrayBuffer(), h = new Uint8Array(buf, 0, Math.min(12, buf.byteLength));
     const isWav = h.length >= 12 && String.fromCharCode(h[0], h[1], h[2], h[3]) === 'RIFF' && String.fromCharCode(h[8], h[9], h[10], h[11]) === 'WAVE';
     if (isWav) { try { return { info: W2D.parseWav(buf), conv: false }; } catch (e) { /* WAV raro (ADPCM, etc.): lo intenta el decodificador */ } }
-    say('Convirtiendo ' + file.name + ' a WAV…');
+    say('converting', { name: file.name });
     await new Promise((r) => setTimeout(r, 30));
     return { info: W2D.parseWav(await decodeToWav(buf)), conv: true };
   }
   async function loadFile(file) {
     resetResult(); state = null; el.make.disabled = true;
     if (!file) return;
-    say('Leyendo ' + file.name + '…');
+    say('reading', { name: file.name });
     try {
       const { info, conv } = await readAudio(file);
       state = { info, plan: W2D.plan(info), fileName: file.name, conv };
@@ -782,8 +1058,8 @@ const W2D = (function () {
       syncIntro(); refreshPlan();
       el.make.disabled = false;
     } catch (e) {
-      state = null; el.introRow.hidden = true; [el.mkDetect, el.mkEqual, el.mkClear, el.mkRestore, el.mkBack, el.mkFwd].forEach((b) => { b.disabled = true; }); showDemo(); el.info.hidden = true; el.cap.textContent = 'Así se ve un archivo con 3 markers: cada marker abre una región y cada región queda en una nota.';
-      say(e.message || 'No se pudo leer el archivo.', 'err');
+      state = null; el.introRow.hidden = true; [el.mkDetect, el.mkEqual, el.mkClear, el.mkRestore, el.mkBack, el.mkFwd].forEach((b) => { b.disabled = true; }); showDemo(); el.info.hidden = true; el.cap.textContent = t('demoCap');
+      sayErr(e);
     }
   }
   el.file.addEventListener('change', () => loadFile(el.file.files[0]));
@@ -792,34 +1068,37 @@ const W2D = (function () {
   /* ---------- crear ---------- */
   el.make.addEventListener('click', () => {
     if (!state) return;
-    resetResult(); el.make.disabled = true; el.prog.hidden = false; el.prog.value = 0; say('Creando…');
+    resetResult(); el.make.disabled = true; el.prog.hidden = false; el.prog.value = 0; say('creating');
     setTimeout(async () => {
       try {
         const out = await W2D.buildDwp(state.info, el.pname.value, TPL, (p) => { el.prog.value = p; }, Object.assign(currentOpts(), { yield: true }));
         const blob = new Blob(out.parts, { type: 'application/octet-stream' });
-        built = { blob, parts: out.parts, filename: out.name + '.dwp', regions: out.regions.length };
+        built = { blob, parts: out.parts, filename: out.name + '.dwp', regions: out.regions.length, loops: out.loops, trimmed: out.trimmed, qo: currentOpts(), rate: state.info.fmt.rate, size: blob.size };
         el.prog.hidden = true;
-        const extra = [], qo = currentOpts();
-        if (qo.rateDiv > 1) extra.push(fmtKhz(state.info.fmt.rate / qo.rateDiv));
-        if (el.optLoop.checked) extra.push(out.loops === 0 ? 'ninguna con loop' : out.loops + (out.loops === 1 ? ' con loop' : ' con loop'));
-        if (el.optTrim.checked && out.trimmed) extra.push(out.trimmed + (out.trimmed === 1 ? ' recortada' : ' recortadas'));
-        el.okline.textContent = built.filename + ' · ' + built.regions + (built.regions === 1 ? ' región' : ' regiones') + (extra.length ? ' (' + extra.join(', ') + ')' : '') + ' · ' + fmtSize(blob.size);
-        el.result.hidden = false; setSaveUi(); say('Listo.');
-      } catch (e) { el.prog.hidden = true; say(e.message || 'No se pudo crear el archivo.', 'err'); }
+        renderOk();
+        el.result.hidden = false; setSaveUi(); say('done');
+      } catch (e) { el.prog.hidden = true; if (e && e.key) sayErr(e); else sayRaw((e && e.message) || t('createFail'), 'err'); }
       el.make.disabled = false;
     }, 30);
   });
 
   /* ---------- guardar ---------- */
+  function renderOk() {
+    const b = built, qo = b.qo, extra = [];
+    if (qo.rateDiv > 1) extra.push(fmtKhz(b.rate / qo.rateDiv));
+    if (qo.loop) extra.push(b.loops === 0 ? t('loopsNone') : tn('loopCount', b.loops));
+    if (qo.trim && b.trimmed) extra.push(tn('trimmedCount', b.trimmed));
+    el.okline.textContent = b.filename + ' · ' + tn('regCount', b.regions) + (extra.length ? ' (' + extra.join(', ') + ')' : '') + ' · ' + fmtSize(b.size);
+  }
   function setSaveUi() {
-    if (dl) { el.save.textContent = 'Guardar .zip con el .dwp'; el.saveNote.textContent = 'Esta vista previa solo permite guardar archivos comunes: se entrega en un .zip. Descomprimilo y abrí el .dwp en DirectWave.'; }
-    else { el.save.textContent = 'Descargar .dwp'; el.saveNote.textContent = 'Abrilo desde DirectWave (Archivo o Open).'; }
+    if (dl) { el.save.textContent = t('saveZip'); el.saveNote.textContent = t('saveZipNote'); }
+    else { el.save.textContent = t('saveDwp'); el.saveNote.textContent = t('saveNote'); }
   }
   el.save.addEventListener('click', async () => {
     if (!built) return;
     if (dl) {
-      try { await dl.save({ filename: built.filename.replace(/\.dwp$/, '') + '.zip', data: new Blob(W2D.zipStore(built.filename, built.parts), { type: 'application/zip' }) }); say('Guardado.'); }
-      catch (e) { say(e && e.code === 'declined' ? 'Cancelaste el guardado.' : 'No se pudo guardar el archivo.', e && e.code === 'declined' ? '' : 'err'); }
+      try { await dl.save({ filename: built.filename.replace(/\.dwp$/, '') + '.zip', data: new Blob(W2D.zipStore(built.filename, built.parts), { type: 'application/zip' }) }); say('saved'); }
+      catch (e) { const no = e && e.code === 'declined'; say(no ? 'cancelled' : 'saveFail', null, no ? '' : 'err'); }
       return;
     }
     /* App Android (Capacitor): el WebView no descarga blobs, se guarda en caché y se abre el menú Compartir/Guardar */
@@ -828,18 +1107,32 @@ const W2D = (function () {
       try {
         const b64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(built.blob); });
         const f = await P.Filesystem.writeFile({ path: built.filename, data: b64, directory: 'CACHE' });
-        await P.Share.share({ title: built.filename, url: f.uri, dialogTitle: 'Guardar o abrir el .dwp' });
-        say('Listo: elegí dónde guardarlo.');
-      } catch (e) { say(e && /cancel/i.test(String(e.message || e)) ? 'Cancelaste el guardado.' : 'No se pudo guardar el archivo.', e && /cancel/i.test(String(e.message || e)) ? '' : 'err'); }
+        await P.Share.share({ title: built.filename, url: f.uri, dialogTitle: t('shareTitle') });
+        say('savedNative');
+      } catch (e) { const no = e && /cancel/i.test(String(e.message || e)); say(no ? 'cancelled' : 'saveFail', null, no ? '' : 'err'); }
       return;
     }
     const url = URL.createObjectURL(built.blob), a = document.createElement('a');
     a.href = url; a.download = built.filename; document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 30000); say('Descarga iniciada.');
+    setTimeout(() => URL.revokeObjectURL(url), 30000); say('dlStarted');
   });
   try { if (window.claude && window.claude.use) window.claude.use('downloads').then((d) => { dl = d || null; if (built) setSaveUi(); }).catch(() => {}); } catch (e) {}
 
-  showDemo(); updateHint();
+  /* ---------- idioma ---------- */
+  function renderLang() {
+    applyStatic(); el.lang.value = lang;
+    if (state) { renderFacts(); syncIntro(); renderPlan(); }
+    else { el.cap.textContent = t('demoCap'); updateHint(); updateEstimate(); }
+    if (built) { renderOk(); setSaveUi(); }
+    if (lastSay) show(t(lastSay.key, lastSay.p), lastSay.kind);
+  }
+  for (const [code, name] of Object.entries(LANGS)) { const o = document.createElement('option'); o.value = code; o.textContent = name; el.lang.appendChild(o); }
+  el.lang.addEventListener('change', () => {
+    lang = I18N[el.lang.value] ? el.lang.value : 'en';
+    try { localStorage.setItem(LS_KEY, lang); } catch (e) {}
+    renderLang();
+  });
+  showDemo(); say('pickFile'); renderLang();
 })();
 </script>
 
