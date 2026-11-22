@@ -822,6 +822,17 @@ const W2D = (function () {
       catch (e) { say(e && e.code === 'declined' ? 'Cancelaste el guardado.' : 'No se pudo guardar el archivo.', e && e.code === 'declined' ? '' : 'err'); }
       return;
     }
+    /* App Android (Capacitor): el WebView no descarga blobs, se guarda en caché y se abre el menú Compartir/Guardar */
+    const cap = window.Capacitor, P = cap && cap.Plugins;
+    if (cap && cap.isNativePlatform && cap.isNativePlatform() && P && P.Filesystem && P.Share) {
+      try {
+        const b64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(built.blob); });
+        const f = await P.Filesystem.writeFile({ path: built.filename, data: b64, directory: 'CACHE' });
+        await P.Share.share({ title: built.filename, url: f.uri, dialogTitle: 'Guardar o abrir el .dwp' });
+        say('Listo: elegí dónde guardarlo.');
+      } catch (e) { say(e && /cancel/i.test(String(e.message || e)) ? 'Cancelaste el guardado.' : 'No se pudo guardar el archivo.', e && /cancel/i.test(String(e.message || e)) ? '' : 'err'); }
+      return;
+    }
     const url = URL.createObjectURL(built.blob), a = document.createElement('a');
     a.href = url; a.download = built.filename; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 30000); say('Descarga iniciada.');

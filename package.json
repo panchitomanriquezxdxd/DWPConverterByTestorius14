@@ -1,0 +1,41 @@
+{
+  "name": "wav-a-dwp",
+  "productName": "Wav a DWP",
+  "version": "1.0.0",
+  "description": "Convierte audio (.wav con markers, .mp3, .ogg, .flac…) en programas de DirectWave (.dwp). Versión Android/Windows.",
+  "author": "Testorius14",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "electron/main.js",
+  "scripts": {
+    "prepare:web": "node scripts/prepare-web.mjs",
+    "start": "npm run prepare:web && electron .",
+    "build:win": "npm run prepare:web && electron-builder --win --x64",
+    "android:sync": "npm run prepare:web && npx cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/filesystem": "^7.0.0",
+    "@capacitor/share": "^7.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.testorius14.wavadwp",
+    "productName": "Wav a DWP",
+    "directories": { "output": "dist-win" },
+    "files": ["electron/**/*", "www/**/*", "package.json"],
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true },
+    "artifactName": "WavADWP-${version}-${os}-${arch}.${ext}"
+  }
+}
