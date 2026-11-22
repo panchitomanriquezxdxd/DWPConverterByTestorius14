@@ -36,6 +36,20 @@ jobs:
           npx capacitor-assets generate --android --iconBackgroundColor '#0d1116' --iconBackgroundColorDark '#0d1116'
           npx cap sync android
 
+      - name: Usar solo el ícono propio (quitar el de la plantilla de Capacitor)
+        run: |
+          RES=android/app/src/main/res
+          rm -f "$RES/drawable-v24/ic_launcher_foreground.xml" "$RES/drawable/ic_launcher_background.xml" "$RES/values/ic_launcher_background.xml"
+          for n in ic_launcher ic_launcher_round; do
+            cat > "$RES/mipmap-anydpi-v26/$n.xml" <<'XML'
+          <?xml version="1.0" encoding="utf-8"?>
+          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+              <background android:drawable="@mipmap/ic_launcher_background"/>
+              <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+          </adaptive-icon>
+          XML
+          done
+
       - name: Compilar APK (debug, instalable directamente)
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon
@@ -46,6 +60,8 @@ jobs:
           AAPT2=$(ls "$ANDROID_HOME"/build-tools/*/aapt2 | sort -V | tail -1)
           echo "--- aapt2 dump badging ---"
           "$AAPT2" dump badging "$APK" | grep -E "^(package|application:|application-label:|application-icon)" || true
+          echo "--- XML del ícono adaptable (debe apuntar a @mipmap) ---"
+          "$AAPT2" dump xmltree --file res/mipmap-anydpi-v26/ic_launcher.xml "$APK" || true
           echo "--- archivos de ícono ---"
           unzip -l "$APK" | grep -E "ic_launcher" || echo "NO HAY ARCHIVOS ic_launcher EN EL APK"
 
