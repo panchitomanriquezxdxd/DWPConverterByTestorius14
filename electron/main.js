@@ -8,6 +8,7 @@ function createWindow() {
     minWidth: 380,
     minHeight: 560,
     title: 'DWPMaker',
+    icon: path.join(__dirname, '..', 'build', 'icon.png'),
     autoHideMenuBar: true,
     webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true },
   });

@@ -33,6 +33,7 @@ jobs:
         run: |
           npm run prepare:web
           npx cap add android
+          npx capacitor-assets generate --android --iconBackgroundColor '#0d1116' --iconBackgroundColorDark '#0d1116'
           npx cap sync android
 
       - name: Compilar APK (debug, instalable directamente)

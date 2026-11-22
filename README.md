@@ -23,6 +23,10 @@ npm start            # abre la app en Windows/Linux/macOS con Electron
 npm run build:win    # instalador en dist-win/ (conviene hacerlo en Windows)
 ```
 
+## Ícono
+
+El diseño original está en `assets/icon.svg`. De ahí salen `assets/icon-*.png` (Android, que genera los tamaños con `@capacitor/assets` durante la compilación) y `build/icon.ico` / `build/icon.png` (Windows). Si lo cambias, regenera los PNG y el `.ico` a partir del SVG.
+
 ## Agregar o corregir un idioma
 
 Los textos están en el objeto `I18N` de `index.html` (una entrada por idioma). Para sumar uno, copiá un bloque, traducilo, agregalo en `LANGS` y, si hace falta, en `detectLang()`.
