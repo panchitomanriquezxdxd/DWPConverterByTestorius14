@@ -10,7 +10,7 @@
   "scripts": {
     "prepare:web": "node scripts/prepare-web.mjs",
     "start": "npm run prepare:web && electron .",
-    "build:win": "npm run prepare:web && electron-builder --win --x64",
+    "build:win": "npm run prepare:web && electron-builder --win --x64 --publish never",
     "android:sync": "npm run prepare:web && npx cap sync android"
   },
   "dependencies": {
@@ -27,15 +27,37 @@
   "build": {
     "appId": "com.testorius14.wavadwp",
     "productName": "Wav a DWP",
-    "directories": { "output": "dist-win" },
-    "files": ["electron/**/*", "www/**/*", "package.json"],
+    "directories": {
+      "output": "dist-win"
+    },
+    "files": [
+      "electron/**/*",
+      "www/**/*",
+      "package.json"
+    ],
     "win": {
       "target": [
-        { "target": "nsis", "arch": ["x64"] },
-        { "target": "portable", "arch": ["x64"] }
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
       ]
     },
-    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true },
-    "artifactName": "WavADWP-${version}-${os}-${arch}.${ext}"
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "WavADWP-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "WavADWP-Portable-${version}.${ext}"
+    }
   }
 }
